@@ -1,4 +1,4 @@
 package io.github.jvitorc.access.exception;
 
-public class IllegalArgumentSecurityException extends RuntimeException {
+public class IllegalArgumentSecurityException extends SecurityException {
 }

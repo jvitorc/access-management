@@ -13,8 +13,8 @@ public class AppExceptionHandler {
     private final Logger logger = LogManager.getLogger(AppExceptionHandler.class.getName());
 
     @ExceptionHandler({SecurityException.class})
-    public ResponseEntity<String> handleSecurityException(SecurityException e) {
+public ResponseEntity<String> handleSecurityException(SecurityException e) {
         logger.error(e);
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 }
