@@ -20,7 +20,6 @@ public class AccountService {
         return repository.save(account);
     }
 
-    @Transactional
     public Optional<Account> findByEmail(String email) {
         return repository.findByEmail(email);
     }

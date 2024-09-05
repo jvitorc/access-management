@@ -2,17 +2,20 @@ package io.github.jvitorc.access.repository;
 
 
 import io.github.jvitorc.access.model.AccessToken;
+import io.github.jvitorc.access.model.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
-public interface AccessTokenRepository extends JpaRepository<AccessToken, String> {
-
-    @Query("SELECT t FROM AccessToken t WHERE t.token = :token AND (t.revoked = false OR t.expired = false)")
-    List<AccessToken> findActiveTokensByToken(@Param("token") String token);
+@Repository
+public interface AccessTokenRepository extends JpaRepository<AccessToken, Integer> {
 
     Optional<AccessToken> findByToken(String token);
+
+    @Modifying
+    @Query("update AccessToken a set a.revoked = true where a.account = :account")
+    int revokeAllByAccount(Account account);
 }

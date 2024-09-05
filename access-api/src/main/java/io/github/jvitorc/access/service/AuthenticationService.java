@@ -7,8 +7,10 @@ import io.github.jvitorc.access.exception.IllegalArgumentSecurityException;
 import io.github.jvitorc.access.exception.InvalidPasswordException;
 import io.github.jvitorc.access.exception.UserNotFoundException;
 import io.github.jvitorc.access.jwt.JwtUtil;
+import io.github.jvitorc.access.model.AccessToken;
 import io.github.jvitorc.access.model.Account;
 import io.github.jvitorc.access.validator.BasicValidator;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 import static java.util.Objects.isNull;
 
@@ -28,7 +31,9 @@ public class AuthenticationService {
     private final AccountService accountService;
     private final PasswordEncoder passwordEncoder;
     private final BasicValidator validator;
+    private final AccessTokenService accessTokenService;
 
+    @Transactional
     public AuthResponse authenticate(AuthRequest request) {
 
         if (isNull(request)) {
@@ -44,11 +49,14 @@ public class AuthenticationService {
         }
 
         String accessToken = JwtUtil.generateToken(new HashMap<>(), account);
-        // TODO: Salvar tokens
+
+        accessTokenService.revokeAllByAccount(account);
+        accessTokenService.save(accessToken, account);
 
         return new AuthResponse(accessToken, "");
     }
 
+    @Transactional
     public AuthResponse register(AuthRegister register) {
         validator.validate(register);
 
@@ -61,12 +69,24 @@ public class AuthenticationService {
         account = accountService.create(account);
 
         String accessToken = JwtUtil.generateToken(new HashMap<>(), account);
+        accessTokenService.save(accessToken, account);
 
         return new AuthResponse(accessToken, "");
     }
 
+    @Transactional
     public AuthResponse refresh(String bearerToken) {
-        // TODO: Implementar
-        return null;
+        Optional<AccessToken> token = accessTokenService.findActiveToken(bearerToken);
+        if (token.isEmpty()) {
+            throw new IllegalArgumentSecurityException();
+        }
+
+        Account account = token.get().getAccount();
+
+        String refreshToken = JwtUtil.generateToken(new HashMap<>(), account);
+        accessTokenService.revokeAllByAccount(account);
+        accessTokenService.save(refreshToken, account);
+
+        return new AuthResponse(bearerToken,refreshToken);
     }
 }

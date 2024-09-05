@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -23,8 +25,7 @@ public class AccessToken {
     private boolean revoked;
     private boolean expired;
 
+    @ManyToOne
     @JoinColumn(name = "account_id", nullable = false, updatable = false)
     private Account account;
-
-
 }

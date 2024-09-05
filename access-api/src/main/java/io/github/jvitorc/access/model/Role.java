@@ -1,16 +1,17 @@
 package io.github.jvitorc.access.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Builder
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Role {
@@ -28,6 +29,7 @@ public class Role {
     private List<Permission> permissions;
 
     @ManyToMany(mappedBy = "roles")
+    @JsonBackReference
     private List<Profile> profiles;
 
 

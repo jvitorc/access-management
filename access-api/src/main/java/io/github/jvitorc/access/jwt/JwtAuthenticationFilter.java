@@ -1,5 +1,7 @@
 package io.github.jvitorc.access.jwt;
 
+import io.github.jvitorc.access.model.AccessToken;
+import io.github.jvitorc.access.service.AccessTokenService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -10,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -25,6 +28,7 @@ import static io.github.jvitorc.access.config.SecurityConfig.PUBLIC_LIST_URL;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private UserDetailsService userDetailsService;
+    private AccessTokenService accessTokenService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -43,6 +47,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         try {
             final String username = JwtUtil.extractAllClaims(tokenJwt).getSubject();
+            Optional<AccessToken> activeToken = accessTokenService.findActiveToken(tokenJwt);
+            if (activeToken.isEmpty()) {
+                throw new SecurityException();
+            }
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
@@ -55,8 +63,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
             filterChain.doFilter(request, response);
-        } catch (Exception e) {
-            logger.error("error", e);
+        } catch (UsernameNotFoundException | IOException | ServletException e) {
+            throw new SecurityException(e);
         }
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -26,7 +27,7 @@ public class UserConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return email -> accountService.findByEmail(email)
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow( () -> new UsernameNotFoundException("User not found: " + email));
     }
 
 }
