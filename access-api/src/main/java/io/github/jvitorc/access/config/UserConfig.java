@@ -1,5 +1,7 @@
 package io.github.jvitorc.access.config;
 
+import io.github.jvitorc.access.exception.UserNotFoundException;
+import io.github.jvitorc.access.service.AccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +16,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @AllArgsConstructor
 public class UserConfig {
 
+    private AccountService accountService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -22,17 +25,8 @@ public class UserConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        UserDetails user = User.builder()
-                .username("user")
-                .password(passwordEncoder().encode("1234"))
-                .roles("USER")
-                .build();
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password(passwordEncoder().encode("1234"))
-                .roles("USER", "ADMIN")
-                .build();
-        return new InMemoryUserDetailsManager(user, admin);
+        return email -> accountService.findByEmail(email)
+                .orElseThrow(UserNotFoundException::new);
     }
 
 }

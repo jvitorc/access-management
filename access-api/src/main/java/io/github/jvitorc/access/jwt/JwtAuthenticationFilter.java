@@ -15,6 +15,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Optional;
+
+import static io.github.jvitorc.access.config.SecurityConfig.PUBLIC_LIST_URL;
 
 @AllArgsConstructor
 @Component
@@ -24,6 +28,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        Optional<String> first = Arrays.stream(PUBLIC_LIST_URL).filter(url -> request.getServletPath().startsWith(url)).findFirst();
+        if (first.isPresent()) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         final String authHeader = request.getHeader("Authorization");
         if (authHeader == null ||!authHeader.startsWith("Bearer ")) {
@@ -46,6 +55,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
             filterChain.doFilter(request, response);
-        } catch (ExpiredJwtException ignored) {}
+        } catch (Exception e) {
+            logger.error("error", e);
+        }
     }
 }
