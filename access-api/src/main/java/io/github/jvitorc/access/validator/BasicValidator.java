@@ -1,6 +1,5 @@
 package io.github.jvitorc.access.validator;
 
-import io.github.jvitorc.access.exception.BusinessExcepton;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;

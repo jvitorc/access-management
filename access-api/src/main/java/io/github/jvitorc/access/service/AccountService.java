@@ -5,7 +5,6 @@ import io.github.jvitorc.access.model.Account;
 import io.github.jvitorc.access.repository.AccountRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 

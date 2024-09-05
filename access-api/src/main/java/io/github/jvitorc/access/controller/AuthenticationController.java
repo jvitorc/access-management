@@ -3,7 +3,6 @@ package io.github.jvitorc.access.controller;
 import io.github.jvitorc.access.dto.AuthRegister;
 import io.github.jvitorc.access.dto.AuthRequest;
 import io.github.jvitorc.access.dto.AuthResponse;
-import io.github.jvitorc.access.model.Account;
 import io.github.jvitorc.access.service.AuthenticationService;
 import io.github.jvitorc.access.util.RequestUtil;
 import jakarta.servlet.http.HttpServletRequest;
