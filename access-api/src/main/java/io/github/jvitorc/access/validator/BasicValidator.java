@@ -15,11 +15,12 @@ public class BasicValidator {
 
     private Validator validator;
 
-    public <T> void validate(T object) {
+    public <T> boolean validate(T object) {
         Set<ConstraintViolation<T>> violations = validator.validate(object);
 
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException(violations);
         }
+        return true;
     }
 }

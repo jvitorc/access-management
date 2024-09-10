@@ -3,6 +3,8 @@ package io.github.jvitorc.access.validator;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
+import java.util.regex.Pattern;
+
 
 public class HasSpecialCharacterValidator implements ConstraintValidator<HasSpecialCharacter, String> {
 
@@ -20,12 +22,13 @@ public class HasSpecialCharacterValidator implements ConstraintValidator<HasSpec
         if (value == null || value.isEmpty()) {
             return true;
         }
-//        long count = value.chars()
-//                .mapToObj(Character::toChars)
-//                .filter(c -> Pattern.matches(regex, String.valueOf(c)))
-//                .count();
 
-        return true;
+        long count = value.chars()
+                .mapToObj(Character::toChars)
+                .filter(c -> Pattern.matches(regex, String.valueOf(c)))
+                .count();
+
+        return count >= min;
     }
 
 

@@ -4,9 +4,7 @@ import io.github.jvitorc.access.validator.HasDigit;
 import io.github.jvitorc.access.validator.HasLowerCase;
 import io.github.jvitorc.access.validator.HasSpecialCharacter;
 import io.github.jvitorc.access.validator.HasUpperCase;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +17,7 @@ import lombok.NoArgsConstructor;
 public class AuthRegister {
 
     @NotBlank
+    @Size(min=3)
     private String name;
     @NotBlank
     @Email
