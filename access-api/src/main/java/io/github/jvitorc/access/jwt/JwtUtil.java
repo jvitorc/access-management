@@ -18,6 +18,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class JwtUtil {
 
+    // TODO: Enviar para .env
     private static final int EXPIRATION_TIME = 86400000;
     private static final String SECRET_KEY = "ed2befb11499489e2570cb053f774b8ed93e89eddab3f78867a2a5f32c58845e";
 
