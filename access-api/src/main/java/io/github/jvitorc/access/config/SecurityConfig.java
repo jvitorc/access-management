@@ -49,13 +49,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(AbstractHttpConfigurer::disable)
                 .headers(p -> p.frameOptions(
                         HeadersConfigurer.FrameOptionsConfig::sameOrigin
                 ))
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers(PUBLIC_LIST_URL).permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider())

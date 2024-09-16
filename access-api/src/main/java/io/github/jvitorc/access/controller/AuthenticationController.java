@@ -26,13 +26,20 @@ public class AuthenticationController {
         return ResponseEntity.ok(service.register(account));
     }
 
-    @PostMapping("/authenticate")
-    public ResponseEntity<AuthResponse> authenticate(@RequestBody AuthRequest request) {
-        return ResponseEntity.ok(service.authenticate(request));
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
+        return ResponseEntity.ok(service.login(request));
     }
 
     @PostMapping("/refresh-token")
     public ResponseEntity<AuthResponse> refresh(HttpServletRequest request) {
         return ResponseEntity.ok(service.refresh(RequestUtil.extractBearerToken(request)));
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletRequest request) {
+        service.logout(RequestUtil.extractBearerToken(request));
+        return ResponseEntity.noContent().build();
+    }
+
 }

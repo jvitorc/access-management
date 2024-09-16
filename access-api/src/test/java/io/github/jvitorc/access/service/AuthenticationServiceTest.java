@@ -66,32 +66,32 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    public void testAuthenticate_NullRequest_ThrowsIllegalArgumentSecurityException() {
+    public void testLogin_NullRequest_ThrowsIllegalArgumentSecurityException() {
 
-        assertThrows(IllegalArgumentSecurityException.class, () -> authenticationService.authenticate(null));
+        assertThrows(IllegalArgumentSecurityException.class, () -> authenticationService.login(null));
     }
 
     @Test
-    public void testAuthenticate_UserNotFound() {
+    public void testLogin_UserNotFound() {
 
         AuthRequest request = new AuthRequest("incorrect", "");
-        assertThrows(UserNotFoundException.class, () -> authenticationService.authenticate(request));
+        assertThrows(UserNotFoundException.class, () -> authenticationService.login(request));
     }
 
     @Test
-    public void testAuthenticate_InvalidPassword() {
+    public void testLogin_InvalidPassword() {
         Account account = accountTest();
 
         AuthRequest request = new AuthRequest(account.getEmail(), "incorrect");
-        assertThrows(InvalidPasswordException.class, () -> authenticationService.authenticate(request));
+        assertThrows(InvalidPasswordException.class, () -> authenticationService.login(request));
     }
 
     @Test
-    public void testAuthenticate_success() {
+    public void testLogin_success() {
         Account account = accountTest();
         AuthRequest request = new AuthRequest(account.getEmail(), "password");
 
-        AuthResponse authenticate = authenticationService.authenticate(request);
+        AuthResponse authenticate = authenticationService.login(request);
 
         String subject = JwtUtil.extractAllClaims(authenticate.accessToken()).getSubject();
         assertEquals(subject, account.getEmail());
@@ -131,7 +131,7 @@ public class AuthenticationServiceTest {
                 .thenReturn(Optional.empty());
 
 
-        assertThrows(IllegalArgumentSecurityException.class, () -> authenticationService.authenticate(null));
+        assertThrows(IllegalArgumentSecurityException.class, () -> authenticationService.login(null));
     }
 
     @Test
@@ -151,7 +151,7 @@ public class AuthenticationServiceTest {
 
         Account account = accountTest();
         AuthRequest request = new AuthRequest(account.getEmail(), "password");
-        AuthResponse authResponse = authenticationService.authenticate(request);
+        AuthResponse authResponse = authenticationService.login(request);
 
         AuthResponse refreshResponse = authenticationService.refresh(authResponse.accessToken());
 

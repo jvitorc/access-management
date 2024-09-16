@@ -34,7 +34,7 @@ public class AuthenticationService {
     private final AccessTokenService accessTokenService;
 
     @Transactional
-    public AuthResponse authenticate(AuthRequest request) {
+    public AuthResponse login(AuthRequest request) {
 
         if (isNull(request)) {
             throw new IllegalArgumentSecurityException();
@@ -53,7 +53,7 @@ public class AuthenticationService {
         accessTokenService.revokeAllByAccount(account);
         accessTokenService.save(accessToken, account);
 
-        return new AuthResponse(accessToken, "");
+        return new AuthResponse(accessToken, account.getName(), account.getEmail(), "");
     }
 
     @Transactional
@@ -71,7 +71,7 @@ public class AuthenticationService {
         String accessToken = JwtUtil.generateToken(new HashMap<>(), account);
         accessTokenService.save(accessToken, account);
 
-        return new AuthResponse(accessToken, "");
+        return new AuthResponse(accessToken, account.getName(), account.getEmail(), "");
     }
 
     @Transactional
@@ -87,6 +87,16 @@ public class AuthenticationService {
         accessTokenService.revokeAllByAccount(account);
         accessTokenService.save(refreshToken, account);
 
-        return new AuthResponse(bearerToken,refreshToken);
+        return new AuthResponse(bearerToken,account.getName(), account.getEmail(), refreshToken);
+    }
+
+    public void logout(String accessToken) {
+        Optional<AccessToken> token = accessTokenService.findActiveToken(accessToken);
+        if (token.isEmpty()) {
+            throw new IllegalArgumentSecurityException();
+        }
+
+        Account account = token.get().getAccount();
+        accessTokenService.revokeAllByAccount(account);
     }
 }
