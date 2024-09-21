@@ -27,8 +27,13 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
       await authService.signout(userData.access_token);
       setUserData(null!);
     };
+
+    const register = async (name: string, email: string, password: string) => {
+      const newUserData = await authService.register(name, email, password);
+      setUserData(newUserData);
+    };
   
-    let value = { userData, signin, signout };
+    let value = { userData, signin, signout, register };
   
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
   }
