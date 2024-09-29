@@ -1,5 +1,5 @@
 import React from "react";
 
 export default function ProtectedPage() {
-    return <h3>Protected</h3>;
+    return <h3>This is a protected page</h3>;
 }

@@ -12,7 +12,7 @@ export default function AuthStatus() {
     }
   
     return (
-      <p>
+      <span>
         Welcome {auth.userData.name}!{" "}
         <button
           onClick={async () => {
@@ -22,7 +22,7 @@ export default function AuthStatus() {
         >
           Sign out
         </button>
-      </p>
+      </span>
     );
   }
   

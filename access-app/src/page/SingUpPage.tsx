@@ -16,7 +16,6 @@ export default function SingUpPage() {
   const auth = useAuth();
 
   let location = useLocation();
-  let from = location.state?.from?.pathname || "/home";
 
   let navigate = useNavigate();
 
@@ -27,12 +26,8 @@ export default function SingUpPage() {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-
     await auth.register(name, email, password);
-
-
-
-    navigate(from, { replace: true });
+    navigate('/', { replace: true });
   }
 
   return (

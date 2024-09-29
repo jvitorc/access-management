@@ -17,7 +17,7 @@ export default function LoginPage() {
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     await auth.signin(email, password);
-    navigate("/home", { replace: true });
+    navigate("/", { replace: true });
   }
 
   async function handleSignUp() {

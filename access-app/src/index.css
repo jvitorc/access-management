@@ -19,3 +19,40 @@ body {
   font-size: 12px;
   padding-left: 8px;
 }
+
+.c-layout {
+  display: grid;
+  grid-template-areas:
+    "header header"
+    "sidebar main"
+    "footer footer";
+  grid-template-columns: 200px auto;
+  grid-template-rows: 100px auto 100px;
+  height: 100vh;
+  margin: 0;
+}
+ 
+.c-heading {
+  grid-area: header;
+  background-color: blue;
+  text-align: center;
+  padding: 20px;
+}
+
+.c-sidebar {
+  grid-area: sidebar;
+  background-color: violet;
+  padding: 20px;
+}
+
+.c-content {
+  grid-area: main;
+  padding: 20px;
+  background-color: pink;
+}
+
+.c-footer {
+  grid-area: footer;
+  background-color: orange;
+  padding: 20px;
+}

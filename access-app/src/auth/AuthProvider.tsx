@@ -17,19 +17,22 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
     const signin = async (username: string, password : string) => {
       const newUserData = await authService.signin(username, password);
       setUserData(newUserData);
+      console.log("signin")
+      console.log(userData)
     };
   
     const signout = async () => {
-      console.log("signout");
-      console.log(userData);
       if (!userData?.access_token) return;
 
       await authService.signout(userData.access_token);
       setUserData(null!);
+      console.log("signout")
     };
 
     const register = async (name: string, email: string, password: string) => {
       const newUserData = await authService.register(name, email, password);
+      console.log("register")
+      console.log(newUserData)
       setUserData(newUserData);
     };
   
