@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -16,6 +17,7 @@ public interface AccessTokenRepository extends JpaRepository<AccessToken, Intege
     Optional<AccessToken> findByToken(String token);
 
     @Modifying
-    @Query("update AccessToken a set a.revoked = true where a.account = :account")
+    @Query("update EN_ACCESS_TOKEN a set a.revoked = true where a.account = :account")
     int revokeAllByAccount(Account account);
+
 }

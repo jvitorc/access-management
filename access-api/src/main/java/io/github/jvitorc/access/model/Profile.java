@@ -7,17 +7,20 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Collections;
 import java.util.List;
 
-@Entity
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity(name = "EN_PROFILE")
 public class Profile {
 
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "profile_id")
     private Integer id;
 
     @Column(unique = true, nullable = false)
@@ -25,17 +28,17 @@ public class Profile {
 
     private String description;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name="rl_profile_role")
+    @ManyToMany
+    @JoinTable(
+            name = "rl_profile_role",
+            joinColumns = @JoinColumn(name = "profile_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    @JsonBackReference
     private List<Role> roles;
 
     @OneToMany(mappedBy = "profile")
     @JsonBackReference
     private List<Account> accounts;
 
-    public List<String> getAuthorities() {
-        return roles.stream().map(Role::getAuthorities)
-                .flatMap(List::stream)
-                .toList();
-    }
 }

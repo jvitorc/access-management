@@ -6,15 +6,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Entity(name = "EN_ACCESS_TOKEN")
 public class AccessToken {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "access_token_id")
     private Integer id;
 
     @Column(unique = true, nullable = false)

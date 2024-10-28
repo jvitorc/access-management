@@ -4,6 +4,8 @@ import io.github.jvitorc.access.model.Account;
 import io.github.jvitorc.access.model.Permission;
 import io.github.jvitorc.access.model.Profile;
 import io.github.jvitorc.access.model.Role;
+import io.github.jvitorc.access.repository.AccountRepository;
+import io.github.jvitorc.access.repository.ProfileRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.transaction.Transactional;
@@ -28,50 +30,18 @@ public class Migration {
     PasswordEncoder passwordEncoder;
 
     @Autowired
-    EntityManagerFactory entityManagerFactory;
+    ProfileRepository repository;
 
     @Bean
     @Transactional
     CommandLineRunner roleMigration(UserDetailsService userDetailsService) {
         return args -> {
-
-            EntityManager entityManager = entityManagerFactory.createEntityManager();
-            entityManager.getTransaction().begin(); // Begin transaction
-
-            List<Permission> permissions = Arrays.asList(
-                    Permission.builder().id(1).name("create").build(),
-                    Permission.builder().id(2).name("read").build(),
-                    Permission.builder().id(3).name("update").build(),
-                    Permission.builder().id(4).name("delete").build()
+            logger.info("Migrating roles...");
+            Arrays.asList(repository.findProfileIdsByAccountId(1)).forEach(
+                    p -> logger.info("Profile: " + p)
             );
-            permissions.forEach(entityManager::persist);
+            logger.info("Migrating end...");
 
-            List<Role> roles = Arrays.asList(
-                    Role.builder().id(1).name("feat-one").description("feature one").permissions(permissions).build(),
-                    Role.builder().id(2).name("feat-two").description("feature two").permissions(permissions).build()
-            );
-            roles.forEach(entityManager::persist);
-
-            List<Profile> profiles = Arrays.asList(
-                    Profile.builder().id(1).name("default").description("default profile").roles(Collections.singletonList(roles.getFirst())).build(),
-                    Profile.builder().id(2).name("admin").description("admin profile").roles(roles).build()
-            );
-            profiles.forEach(entityManager::persist);
-
-            Account accountDefault = Account.builder().name("default").email("default@email.com")
-                    .password(passwordEncoder.encode("password")).profile(profiles.getFirst())
-                    .build();
-
-            Account admin = Account.builder().name("admin").email("admin@email.com")
-                    .password(passwordEncoder.encode("password")).profile(profiles.getLast())
-                    .build();
-
-            entityManager.persist(accountDefault);
-            entityManager.persist(admin);
-
-            entityManager.getTransaction().commit(); // Commit transaction
         };
     }
-
-
 }

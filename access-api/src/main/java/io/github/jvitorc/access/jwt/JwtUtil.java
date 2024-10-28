@@ -22,11 +22,11 @@ public class JwtUtil {
     private static final int EXPIRATION_TIME = 86400000;
     private static final String SECRET_KEY = "ed2befb11499489e2570cb053f774b8ed93e89eddab3f78867a2a5f32c58845e";
 
-    public static String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+    public static String generateToken(Map<String, Object> extraClaims, String username) {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
-                .setSubject(userDetails.getUsername())
+                .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)

@@ -9,6 +9,8 @@ import io.github.jvitorc.access.exception.UserNotFoundException;
 import io.github.jvitorc.access.jwt.JwtUtil;
 import io.github.jvitorc.access.model.AccessToken;
 import io.github.jvitorc.access.model.Account;
+import io.github.jvitorc.access.model.AccountDetails;
+import io.github.jvitorc.access.repository.AccountDetailsRepository;
 import io.github.jvitorc.access.validator.BasicValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,6 +43,9 @@ public class AuthenticationServiceTest {
     @Mock
     private AccessTokenService accessTokenService;
 
+    @Mock
+    private AccountDetailsRepository accountDetailsRepository;
+
     @InjectMocks
     private AuthenticationService authenticationService;
 
@@ -48,9 +53,12 @@ public class AuthenticationServiceTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         Account account = accountTest();
+        AccountDetails accountDetails = AccountDetails.builder()
+                .id(account.getId()).email(account.getEmail())
+                .password(account.getPassword()).build();
 
-        when(accountService.findByEmail(account.getEmail()))
-                .thenReturn(Optional.of(accountTest()));
+        when(accountDetailsRepository.findByEmail(account.getEmail()))
+                .thenReturn(Optional.of(accountDetails));
 
         when(accountService.create(any()))
                 .thenAnswer(o -> o.getArgument(0, Account.class));

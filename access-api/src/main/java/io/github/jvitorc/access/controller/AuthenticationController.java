@@ -1,17 +1,17 @@
 package io.github.jvitorc.access.controller;
 
-import io.github.jvitorc.access.dto.AuthRegister;
-import io.github.jvitorc.access.dto.AuthRequest;
-import io.github.jvitorc.access.dto.AuthResponse;
+import io.github.jvitorc.access.dto.*;
+import io.github.jvitorc.access.exception.BusinessException;
+import io.github.jvitorc.access.model.Account;
+import io.github.jvitorc.access.repository.ChangePasswordRepository;
 import io.github.jvitorc.access.service.AuthenticationService;
 import io.github.jvitorc.access.util.RequestUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Objects;
 
 @AllArgsConstructor
 @RestController
@@ -40,6 +40,19 @@ public class AuthenticationController {
     public ResponseEntity<Void> logout(HttpServletRequest request) {
         service.logout(RequestUtil.extractBearerToken(request));
         return ResponseEntity.noContent().build();
+    }
+
+
+    @PostMapping("/password/update/{urlSecret}")
+    public ResponseEntity<Account> updatePassword(@PathVariable String urlSecret, @RequestBody AccountUpdatePasswordDTO body) {
+        service.updatePassword(urlSecret,body);
+        return ResponseEntity.accepted().build();
+    }
+
+    @PostMapping("/password/url")
+    public ResponseEntity<String>  getUrlChangePassword(@RequestBody AuthCreateUrlPasswordDTO body) {
+        // TODO: SEND BY EMAIL
+        return ResponseEntity.ok(service.createUrlChangePassword(body));
     }
 
 }

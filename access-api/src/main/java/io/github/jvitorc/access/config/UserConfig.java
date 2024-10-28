@@ -1,6 +1,6 @@
 package io.github.jvitorc.access.config;
 
-import io.github.jvitorc.access.service.AccountService;
+import io.github.jvitorc.access.repository.AccountDetailsRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @AllArgsConstructor
 public class UserConfig {
 
-    private AccountService accountService;
+    private AccountDetailsRepository repository;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -22,7 +22,7 @@ public class UserConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return email -> accountService.findByEmail(email)
+        return email -> repository.findByEmail(email)
                 .orElseThrow( () -> new UsernameNotFoundException("User not found: " + email));
     }
 

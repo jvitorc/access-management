@@ -1,5 +1,6 @@
 package io.github.jvitorc.access.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,16 +12,20 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Collections;
+
+import static java.util.Objects.isNull;
 
 @Data
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Account implements UserDetails {
+@Entity(name = "EN_ACCOUNT")
+public class Account {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "account_id")
     private Integer id;
 
     private String name;
@@ -31,41 +36,9 @@ public class Account implements UserDetails {
     @JsonIgnore
     private String password;
 
-
     @ManyToOne
     @JoinColumn(name = "profile_id")
+    @JsonBackReference
     private Profile profile;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-
-        return profile.getAuthorities().stream()
-                .map(SimpleGrantedAuthority::new)
-                .toList();
-    }
-
-    @Override
-    public String getUsername() {
-        return this.email;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 }

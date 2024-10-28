@@ -2,6 +2,7 @@ package io.github.jvitorc.access.jwt;
 
 import io.github.jvitorc.access.model.AccessToken;
 import io.github.jvitorc.access.service.AccessTokenService;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -63,7 +64,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
             filterChain.doFilter(request, response);
-        } catch (UsernameNotFoundException | IOException | ServletException e) {
+        } catch (UsernameNotFoundException | IOException | ExpiredJwtException e) {
             throw new SecurityException(e);
         }
     }

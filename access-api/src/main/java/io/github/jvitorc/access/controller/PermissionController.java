@@ -1,16 +1,14 @@
 package io.github.jvitorc.access.controller;
 
 import io.github.jvitorc.access.model.Permission;
-import io.github.jvitorc.access.model.Role;
 import io.github.jvitorc.access.service.PermissionService;
-import io.github.jvitorc.access.service.RoleService;
+import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import static io.github.jvitorc.access.util.RequestUtil.pageRequestBuild;
 
 @AllArgsConstructor
 @RestController
@@ -20,9 +18,13 @@ public class PermissionController {
     private PermissionService permissionService;
 
     @GetMapping
-    public ResponseEntity<List<Permission>> findAll() {
-        return ResponseEntity.ok(permissionService.findAll());
+    public ResponseEntity<Page<Permission>> findAll(@PathParam("pageNumber") Integer pageNumber) {
+        return ResponseEntity.ok(permissionService.findAll(pageRequestBuild(pageNumber)));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Permission> findById(@PathVariable Integer id) {
+        return ResponseEntity.ok(permissionService.findById(id));
+    }
 
 }
