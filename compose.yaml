@@ -1,0 +1,32 @@
+name: access
+services:
+  app:
+    build: ./access-app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+  api:
+    build: ./access-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - my-network
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
+  db:
+    image: postgres:17-alpine
+    container_name: db
+    environment:
+      - POSTGRES_PASSWORD=mysecretpassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db/data/postgres:/var/lib/postgresql/data
+    networks:
+      - my-network
+
+networks:
+  my-network: {}
