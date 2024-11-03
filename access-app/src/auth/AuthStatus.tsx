@@ -1,6 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./auth-context";
+import { Avatar } from 'primereact/avatar';
+import { Button } from "primereact/button";
 
 
 export default function AuthStatus() {
@@ -8,21 +10,25 @@ export default function AuthStatus() {
     let navigate = useNavigate();
   
     if (!auth.userData) {
-      return <p>You are not logged in.</p>;
+      navigate("/login", { replace: true });
     }
   
     return (
-      <span>
-        Welcome {auth.userData.name}!{" "}
-        <button
-          onClick={async () => {
+      <div>
+        <h1 className="flex-auto">
+          ACCESS MANAGEMENT
+        </h1>
+        <span className="avatar-container" style={{ top: '30px'}}>
+        <Button size="small" style={{ marginRight: '0.5em', marginBottom: '0.3em' }} onClick={async () => {
             await auth.signout();
             navigate("/");
-          }}
-        >
+          }}>
           Sign out
-        </button>
-      </span>
+        </Button>
+        <Avatar label="J" className="avatar" size="large" style={{ backgroundColor: '#9c27b0', color: '#ffffff' }} shape="circle" />
+        </span>
+
+      </div>
     );
   }
   

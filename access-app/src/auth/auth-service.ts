@@ -3,7 +3,6 @@ import { URL_LOGIN, URL_LOGOUT, URL_REGISTER } from "../server";
 
 const authService = {
     async signin(email: string, password: string) {
-      console.log({email, password})
       const response = await fetch(URL_LOGIN, {
         method: 'POST',
         headers: {
