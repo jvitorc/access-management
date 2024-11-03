@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface ProfileRepository extends PagingAndSortingRepository<Profile, Integer> {
 
-    @Query("select p.id from EN_PROFILE a join a.roles p where a.id = :profileId")
+    @Query("select p.id from EN_PROFILE a join a.rules p where a.id = :profileId")
     List<Integer> findProfileIdsByAccountId(@Param("profileId") Integer profileId);
 
     Optional<Profile> findById(Integer id);

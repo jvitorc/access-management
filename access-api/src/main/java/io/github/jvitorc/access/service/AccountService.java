@@ -3,10 +3,10 @@ package io.github.jvitorc.access.service;
 
 import io.github.jvitorc.access.dto.AccountDTO;
 import io.github.jvitorc.access.dto.AccountUpdateDTO;
-import io.github.jvitorc.access.dto.AccountUpdatePasswordDTO;
 import io.github.jvitorc.access.dto.AccountUpdateProfileDTO;
 import io.github.jvitorc.access.exception.BusinessException;
 import io.github.jvitorc.access.exception.NotFoundException;
+import io.github.jvitorc.access.mapper.AccountMapper;
 import io.github.jvitorc.access.model.Account;
 import io.github.jvitorc.access.model.AccountDetails;
 import io.github.jvitorc.access.model.Profile;
@@ -17,7 +17,6 @@ import io.github.jvitorc.access.validator.BasicValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import static java.util.Objects.isNull;
@@ -31,14 +30,13 @@ public class AccountService {
     private final AccountDetailsRepository detailsRepository;
     private final ProfileRepository profileRepository;
     private final BasicValidator validator;
-    private final PasswordEncoder passwordEncoder;
 
     public Account create(Account account) {
         return repository.save(account);
     }
 
-    public Page<Account> findAll(Pageable pageable) {
-        return repository.findAll(pageable);
+    public Page<AccountDTO> findAll(Pageable pageable) {
+        return repository.findAll(pageable).map(AccountMapper::toDTO);
     }
 
     public AccountDTO findById(Integer id) {

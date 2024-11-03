@@ -12,6 +12,6 @@ public class ProfileDTO {
     private Integer id;
     private String name;
     private String description;
-    private List<Integer> roles;
+    private List<Integer> rules;
 
 }

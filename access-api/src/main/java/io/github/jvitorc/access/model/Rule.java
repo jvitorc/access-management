@@ -13,12 +13,12 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name="EN_ROLE")
-public class Role {
+@Entity(name="EN_RULE")
+public class Rule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "role_id")
+    @Column(name = "rule_id")
     private Integer id;
 
     @Column(unique = true, nullable = false)
@@ -28,13 +28,13 @@ public class Role {
 
     @ManyToMany
     @JoinTable(
-            name = "rl_role_permission",
-            joinColumns = @JoinColumn(name = "role_id"),
+            name = "rl_rule_permission",
+            joinColumns = @JoinColumn(name = "rule_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id")
     )
     private List<Permission> permissions;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "rules")
     @JsonBackReference
     private List<Profile> profiles;
 

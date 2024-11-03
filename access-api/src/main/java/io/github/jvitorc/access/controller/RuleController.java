@@ -1,7 +1,7 @@
 package io.github.jvitorc.access.controller;
 
-import io.github.jvitorc.access.model.Role;
-import io.github.jvitorc.access.service.RoleService;
+import io.github.jvitorc.access.model.Rule;
+import io.github.jvitorc.access.service.RuleService;
 import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,19 +15,19 @@ import static io.github.jvitorc.access.util.RequestUtil.pageRequestBuild;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/v1/role")
-public class RoleController {
+@RequestMapping("/api/v1/rule")
+public class RuleController {
 
-    private RoleService roleService;
+    private RuleService ruleService;
 
     @GetMapping
-    public ResponseEntity<Page<Role>> findAll(@PathParam("pageNumber") Integer pageNumber) {
-        return ResponseEntity.ok(roleService.findAll(pageRequestBuild(pageNumber)));
+    public ResponseEntity<Page<Rule>> findAll(@PathParam("pageNumber") Integer pageNumber) {
+        return ResponseEntity.ok(ruleService.findAll(pageRequestBuild(pageNumber)));
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Role> findById(@PathVariable Integer id) {
-        return ResponseEntity.ok(roleService.findById(id));
+    public ResponseEntity<Rule> findById(@PathVariable Integer id) {
+        return ResponseEntity.ok(ruleService.findById(id));
     }
 
 }

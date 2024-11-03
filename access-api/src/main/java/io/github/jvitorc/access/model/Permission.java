@@ -26,6 +26,6 @@ public class Permission {
 
     @JsonBackReference
     @ManyToMany(mappedBy="permissions")
-    private List<Role> roles;
+    private List<Rule> rules;
 
 }

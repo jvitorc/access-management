@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Collections;
 import java.util.List;
 
 @Builder
@@ -30,12 +29,12 @@ public class Profile {
 
     @ManyToMany
     @JoinTable(
-            name = "rl_profile_role",
+            name = "rl_profile_rule",
             joinColumns = @JoinColumn(name = "profile_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
+            inverseJoinColumns = @JoinColumn(name = "rule_id")
     )
     @JsonBackReference
-    private List<Role> roles;
+    private List<Rule> rules;
 
     @OneToMany(mappedBy = "profile")
     @JsonBackReference

@@ -25,13 +25,13 @@ public class ProfileService {
         Profile profile = profileRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
 
-        List<Integer> roles = profileRepository.findProfileIdsByAccountId(id);
+        List<Integer> rules = profileRepository.findProfileIdsByAccountId(id);
 
         return ProfileDTO.builder()
                 .id(profile.getId())
                 .name(profile.getName())
                 .description(profile.getDescription())
-                .roles(roles)
+                .rules(rules)
                 .build();
     }
 }

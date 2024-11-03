@@ -25,8 +25,9 @@ public class AccountController {
     private AccountService accountService;
 
     @GetMapping
-    public ResponseEntity<Page<Account>> findAll(@PathParam("pageNumber") Integer pageNumber) {
-        return ResponseEntity.ok(accountService.findAll(pageRequestBuild(pageNumber)));
+    public ResponseEntity<Page<AccountDTO>> findAll(@PathParam("pageNumber") Integer pageNumber) {
+        Page<AccountDTO> all = accountService.findAll(pageRequestBuild(pageNumber));
+        return ResponseEntity.ok(all);
     }
 
 
