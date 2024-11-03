@@ -10,7 +10,7 @@ export default function Layout() {
         <div className="c-heading">
           <AuthStatus />
         </div>
-          <NavBar />
+        <NavBar />
         <section className="c-content">
           <Outlet />
         </section>

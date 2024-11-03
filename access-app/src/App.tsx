@@ -14,6 +14,7 @@ import PermissionPage from "./page/PermissionPage";
 import RulePage from "./page/RulePage";
 import ProfilePage from "./page/ProfilePage";
 import HomePage from "./page/HomePage";
+import PermissionEditPage from "./page/PermissionEditPage";
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/rule" element={<RulePage />} />
             <Route path="/permission" element={<PermissionPage />} />
+            <Route path="/permission/edit" element={<PermissionEditPage />} />
           </Route>
         </Route>
       </Routes>

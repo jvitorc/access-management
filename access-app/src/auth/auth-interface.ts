@@ -1,6 +1,6 @@
 export interface AuthContextType {
     userData: UserDataType;
-    signin: (username: string, password : string) => void;
+    signin:  (username: string, password : string) => Promise<void>;
     signout: () => void;
     register: (name: string, email: string, password: string) => void;
 }

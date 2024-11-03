@@ -26,12 +26,13 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
     setUserData(newUserData);
   };
 
-  const signout = async () => {
+  const signout = async (): Promise<void> => {
     if (!userData?.access_token) return;
 
     await authService.signout(userData.access_token);
     localStorage.removeItem("token");
     setUserData(null!);
+    return Promise.resolve();
   };
 
   const register = async (name: string, email: string, password: string) => {

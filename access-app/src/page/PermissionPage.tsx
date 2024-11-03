@@ -9,10 +9,12 @@ import { Permission } from "../interface/Permission";
 import { Page } from "../interface/Page";
 import { newPageBuild } from "../util/builder";
 import DataSearch from "../components/DataSearch";
+import { useNavigate } from "react-router-dom";
 
 export default function PermissionPage() {
   let auth = useAuth();
-
+  let navigate = useNavigate();
+  
   const [page, setPage] = React.useState<Page<Permission>>(newPageBuild());
 
   const columns = [
@@ -30,7 +32,7 @@ export default function PermissionPage() {
 
     data.content = data.content.map(({ id, name }) => ({
         id, name,
-        edit: <Button label="" icon="pi pi-pencil" onClick={() => {}} />,
+        edit: <Button label="" icon="pi pi-pencil" onClick={() => navigate(`/permission/edit`)} />,
     }));
 
     setPage(data)

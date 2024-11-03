@@ -1,15 +1,23 @@
+:root {
+  --mimi-pink: #efcfe3ff;
+  --myrtle-green: #32746dff;
+  --cambridge-blue: #9ec5abff;
+  --light-blue: #b3dee2ff;
+  --beige: #eaf2d7ff;
+}
 
 body {
   margin: 0;
   padding: 0;
+  background-color: var(--light-blue);
+  font-family: cursive;
 }
 
 .c-card-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: bisque;
+  height: 85vh;
   margin: 0%;
 }
 
@@ -34,35 +42,37 @@ body {
  
 .c-heading {
   grid-area: header;
-  background-color: blue;
+  background-color: var(--cambridge-blue);
   text-align: center;
   padding: 20px;
 }
 
 .c-sidebar {
   grid-area: sidebar;
-  background-color: violet;
+  background-color: var(--beige);
+  border:0px;
   padding: 20px;
+  font-weight: bold;
 }
 
 .c-content {
   grid-area: main;
   padding: 20px;
-  background-color: pink;
+  background-color: var(--light-blue);
 }
 
 .c-footer {
   grid-area: footer;
-  background-color: orange;
+  background-color: var(--cambridge-blue);
   padding: 20px;
-}
-
-.avatar-container {
-  position: absolute;
-  right: 0;
-  padding-right: 20px;
+  text-align: center;
+  font-weight: bold;
 }
 
 .avatar {
-  position: relative;
+  position: absolute;
+  right: 30px;
+  top: 25px;
+  background-color: #9c27b0;
+  color: #ffffff 
 }

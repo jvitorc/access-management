@@ -33,7 +33,8 @@ const authService = {
         body: JSON.stringify({name, email, password}),
       })
       if (!response.ok) {
-        throw "Failed to register";
+        const errorMessage = await response.text();
+        throw new Error(errorMessage);
       }
       return await response.json();
     },
